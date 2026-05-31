@@ -25,12 +25,28 @@ public class MainDashboard extends JFrame {
     private void initComponents() {
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Placeholder Panels
-        tabbedPane.addTab("Add Room", createPlaceholderPanel("Add Room Panel"));
-        tabbedPane.addTab("Book Room", createPlaceholderPanel("Book Room Panel"));
-        tabbedPane.addTab("View Bookings", createPlaceholderPanel("View Bookings Panel"));
-        tabbedPane.addTab("Check-Out", createPlaceholderPanel("Check-Out Room Panel"));
-        tabbedPane.addTab("Search Availability", createPlaceholderPanel("Search Room Availability Panel"));
+        // Feature Panels
+        AddRoomPanel addRoomPanel = new AddRoomPanel(roomDAO);
+        BookRoomPanel bookRoomPanel = new BookRoomPanel(roomDAO, bookingDAO);
+        ViewBookingsPanel viewBookingsPanel = new ViewBookingsPanel(bookingDAO);
+        CheckOutPanel checkOutPanel = new CheckOutPanel(bookingDAO, roomDAO);
+        SearchRoomPanel searchRoomPanel = new SearchRoomPanel(roomDAO);
+
+        tabbedPane.addTab("Add Room", addRoomPanel);
+        tabbedPane.addTab("Book Room", bookRoomPanel);
+        tabbedPane.addTab("View Bookings", viewBookingsPanel);
+        tabbedPane.addTab("Check-Out", checkOutPanel);
+        tabbedPane.addTab("Search Availability", searchRoomPanel);
+
+        // Refresh data when switching tabs
+        tabbedPane.addChangeListener(e -> {
+            int index = tabbedPane.getSelectedIndex();
+            switch (index) {
+                case 1: bookRoomPanel.refreshRooms(); break;
+                case 2: viewBookingsPanel.refreshTable(); break;
+                case 3: checkOutPanel.refreshBookings(); break;
+            }
+        });
 
         add(tabbedPane, BorderLayout.CENTER);
     }
