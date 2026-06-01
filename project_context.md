@@ -39,4 +39,4 @@ The application must have a Main Window with navigation to access the following 
 
 5. **Search Room Availability Panel:**
     - Inputs: Combo boxes to filter rooms by type, price range, and availability.
-    - Component: A `JTable` displaying the search results.
+    - Component: A `JTable` displaying the search results.@
