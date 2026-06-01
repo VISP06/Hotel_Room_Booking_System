@@ -1,58 +1,152 @@
-Hotel Room Booking System
+# 🏨 Hotel Room Booking System
 
-  A professional desktop application designed for hotel staff to streamline the management of room inventory, guest bookings, and automated
-  check-out billing. The system provides an intuitive interface for handling daily hotel operations efficiently.
+A modern desktop application built with **Java Swing** and **MySQL** that helps hotel staff efficiently manage room inventory, guest reservations, and billing operations. The system provides an intuitive interface for handling daily hotel management tasks with speed and accuracy.
 
-  Screenshots
+---
 
-  !Main Dashboard (placeholder-link)
-  !Room Search & Availability (placeholder-link)
-  !Booking Management (placeholder-link)
-  !Check-Out & Billing (placeholder-link)
+## 📸 Screenshots
 
-  Tech Stack
+| Dashboard                      | Room Search                      |
+| ------------------------------ | -------------------------------- |
+| ![Dashboard](placeholder-link) | ![Room Search](placeholder-link) |
 
-   * Java 8+: Core programming language.
-   * Java Swing: Framework for the graphical user interface.
-   * JDBC: API for database connectivity.
-   * MySQL: Relational database for data storage.
-   * Maven: Dependency management and build tool.
+| Booking Management                      | Check-Out & Billing            |
+| --------------------------------------- | ------------------------------ |
+| ![Booking Management](placeholder-link) | ![Check-Out](placeholder-link) |
 
-  Project Structure
+---
 
-   1 src/main/java/
-   2 ├── dao     # Data Access Objects
-   3 ├── main    # App Entry Point
-   4 ├── model   # Data Entity Classes
-   5 ├── util    # Database Connection Utility
-   6 └── view    # Swing UI Components
+## ✨ Features
 
-  Key Features
+### 🏠 Room Management
 
-   * Add Room: Easily manage and expand room inventory.
-   * Book Room: Seamless guest registration and room assignment.
-   * View Bookings: Comprehensive list of bookings with built-in filtering options.
-   * Check-Out: Automated billing with dynamic stay duration and cost calculation.
-   * Search Room Availability: Real-time lookup for vacant rooms based on criteria.
+* Add new rooms to the inventory
+* Manage room details and availability
+* Track occupied and vacant rooms
 
-  Installation Steps
+### 📅 Booking Management
 
-   1. Clone the Repository:
+* Register guest bookings quickly
+* Assign rooms seamlessly
+* Store and manage booking information
 
-   1     git clone https://github.com/your-username/HotelRoomBookingSystem.git
+### 🔍 Room Availability Search
 
-   2. Setup Database:
-       * Open MySQL Workbench or your preferred MySQL client.
-       * Locate the included .sql dump file in the project root.
-       * Execute the script to create the necessary database schema and tables.
+* Search available rooms in real time
+* Filter rooms based on requirements
+* Instantly view room status
 
-   3. Import Project:
-       * Open your IDE (IntelliJ IDEA or Eclipse).
-       * Import the project as a Maven Project.
-   4. Configure Database Connection:
-       * Crucial: Navigate to src/main/java/util/DBConnection.java.
-       * Update the username and password variables to match your local MySQL configuration.
+### 📋 Booking Records
 
-   5. Run Application:
-       * Locate src/main/java/main/Main.java.
-       * Right-click and select Run 'Main.main()'.
+* View all active and completed bookings
+* Easily track guest information
+* Access booking history when needed
+
+### 💳 Automated Check-Out & Billing
+
+* Calculate total stay duration automatically
+* Generate billing information instantly
+* Simplify the guest check-out process
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose                                  |
+| ---------- | ---------------------------------------- |
+| Java 8+    | Core programming language                |
+| Java Swing | Desktop GUI development                  |
+| JDBC       | Database connectivity                    |
+| MySQL      | Relational database management           |
+| Maven      | Dependency management & build automation |
+
+---
+
+## 📁 Project Structure
+
+```text
+src/main/java/
+├── dao/       # Data Access Objects
+├── main/      # Application Entry Point
+├── model/     # Entity Classes
+├── util/      # Database Utility Classes
+└── view/      # Swing User Interface Components
+```
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/your-username/HotelRoomBookingSystem.git
+cd HotelRoomBookingSystem
+```
+
+### 2️⃣ Set Up the Database
+
+1. Open MySQL Workbench (or your preferred MySQL client).
+2. Locate the provided `.sql` file in the project root directory.
+3. Execute the script to create the required database and tables.
+
+### 3️⃣ Import the Project
+
+* Open **IntelliJ IDEA** or **Eclipse**
+* Import the project as a **Maven Project**
+
+### 4️⃣ Configure Database Credentials
+
+Navigate to:
+
+```text
+src/main/java/util/DBConnection.java
+```
+
+Update the database configuration:
+
+```java
+private static final String USERNAME = "your_username";
+private static final String PASSWORD = "your_password";
+```
+
+### 5️⃣ Run the Application
+
+Locate:
+
+```text
+src/main/java/main/Main.java
+```
+
+Run:
+
+```java
+Main.main()
+```
+
+---
+
+## 🎯 Core Modules
+
+* Room Inventory Management
+* Guest Reservation System
+* Room Availability Search
+* Booking Records Management
+* Automated Billing & Check-Out
+
+---
+
+## 🔮 Future Enhancements
+
+* User Authentication & Role Management
+* Online Reservation Support
+* PDF Invoice Generation
+* Room Categories & Pricing Tiers
+* Reporting and Analytics Dashboard
+* Email Notifications for Guests
+
+---
+
+## 📄 License
+
+This project is intended for educational and learning purposes. Feel free to modify and extend it according to your requirements.
