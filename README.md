@@ -87,7 +87,12 @@ cd HotelRoomBookingSystem
 ### 2️⃣ Set Up the Database
 
 1. Open MySQL Workbench (or your preferred MySQL client).
-2. Locate the provided `.sql` file in the project root directory.
+2. Locate the provided `.sql` file:
+
+```text
+database/hotel_booking_db.sql
+```
+
 3. Execute the script to create the required database and tables.
 
 ### 3️⃣ Import the Project
