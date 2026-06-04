@@ -71,6 +71,20 @@ public class RoomDAO {
         return null;
     }
 
+    public boolean isRoomNumberExists(String roomNumber) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM rooms WHERE room_number = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, roomNumber);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+
     private Room mapResultSetToRoom(ResultSet rs) throws SQLException {
         Room room = new Room();
         room.setId(rs.getInt("id"));

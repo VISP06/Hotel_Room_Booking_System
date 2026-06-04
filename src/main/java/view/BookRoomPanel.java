@@ -6,6 +6,10 @@ import model.Booking;
 import model.Room;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -40,12 +44,14 @@ public class BookRoomPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(new JLabel("Guest Name:"), gbc);
         txtGuestName = new JTextField(20);
+        ((AbstractDocument) txtGuestName.getDocument()).setDocumentFilter(new AlphaSpaceFilter());
         gbc.gridx = 1;
         formPanel.add(txtGuestName, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1;
         formPanel.add(new JLabel("Contact Info:"), gbc);
         txtContact = new JTextField(20);
+        ((AbstractDocument) txtContact.getDocument()).setDocumentFilter(new NumericLimitFilter(10));
         gbc.gridx = 1;
         formPanel.add(txtContact, gbc);
 
@@ -79,7 +85,8 @@ public class BookRoomPanel extends JPanel {
         formPanel.add(txtCheckOut, gbc);
 
         JButton btnBook = new JButton("Book Room");
-        gbc.gridx = 1; gbc.gridy = 5;
+        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         formPanel.add(btnBook, gbc);
 
@@ -87,20 +94,25 @@ public class BookRoomPanel extends JPanel {
 
         btnBook.addActionListener(e -> {
             try {
-                String guestName = txtGuestName.getText();
-                String contact = txtContact.getText();
+                String guestName = txtGuestName.getText().trim();
+                String contact = txtContact.getText().trim();
+                String checkInStr = txtCheckIn.getText().trim();
+                String checkOutStr = txtCheckOut.getText().trim();
+
+                if (guestName.isEmpty() || contact.isEmpty() || checkInStr.isEmpty() || checkOutStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "All fields are required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 
-                // Contact Validation
-                if (!contact.matches("\\d+")) {
-                    JOptionPane.showMessageDialog(this, "Contact Info must only contain numeric digits.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                if (contact.length() != 10) {
+                    JOptionPane.showMessageDialog(this, "Contact Info must be exactly 10 digits.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 Room selectedRoom = (Room) comboRooms.getSelectedItem();
-                Date checkIn = Date.valueOf(txtCheckIn.getText());
-                Date checkOut = Date.valueOf(txtCheckOut.getText());
+                Date checkIn = Date.valueOf(checkInStr);
+                Date checkOut = Date.valueOf(checkOutStr);
 
-                // Date Validation
                 if (checkIn.after(checkOut)) {
                     JOptionPane.showMessageDialog(this, "Check-in date cannot be after the Check-out date.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -142,6 +154,38 @@ public class BookRoomPanel extends JPanel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    // Properly nested helper classes
+    private static class AlphaSpaceFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            if (string.matches("[a-zA-Z ]*")) super.insertString(fb, offset, string, attr);
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (text.matches("[a-zA-Z ]*")) super.replace(fb, offset, length, text, attrs);
+        }
+    }
+
+    private static class NumericLimitFilter extends DocumentFilter {
+        private final int limit;
+        public NumericLimitFilter(int limit) { this.limit = limit; }
+
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            if (string.matches("\\d*") && (fb.getDocument().getLength() + string.length()) <= limit) {
+                super.insertString(fb, offset, string, attr);
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (text.matches("\\d*") && (fb.getDocument().getLength() - length + text.length()) <= limit) {
+                super.replace(fb, offset, length, text, attrs);
+            }
         }
     }
 }

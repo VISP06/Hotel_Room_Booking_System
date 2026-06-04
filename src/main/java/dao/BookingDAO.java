@@ -80,6 +80,32 @@ public class BookingDAO {
         return totalCost;
     }
 
+    public void deleteBooking(int bookingId) throws SQLException {
+        String getRoomSql = "SELECT room_id FROM bookings WHERE id = ?";
+        String deleteSql = "DELETE FROM bookings WHERE id = ?";
+        
+        try (Connection conn = DBConnection.getConnection()) {
+            int roomId = -1;
+            try (PreparedStatement pstmt = conn.prepareStatement(getRoomSql)) {
+                pstmt.setInt(1, bookingId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        roomId = rs.getInt("room_id");
+                    }
+                }
+            }
+            
+            try (PreparedStatement pstmt = conn.prepareStatement(deleteSql)) {
+                pstmt.setInt(1, bookingId);
+                pstmt.executeUpdate();
+            }
+            
+            if (roomId != -1) {
+                roomDAO.updateRoomStatus(roomId, "Available");
+            }
+        }
+    }
+
     private void updateBookingCost(int bookingId, double totalCost) throws SQLException {
         String sql = "UPDATE bookings SET total_cost = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();

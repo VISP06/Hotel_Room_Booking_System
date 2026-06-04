@@ -79,20 +79,36 @@ public class AddRoomPanel extends JPanel {
         // Action Listener
         btnAdd.addActionListener(e -> {
             try {
-                String roomNumber = txtRoomNumber.getText();
+                String roomNumber = txtRoomNumber.getText().trim();
                 if (roomNumber.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Room Number is required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 
+                // Duplicate Room Check
+                if (roomDAO.isRoomNumberExists(roomNumber)) {
+                    JOptionPane.showMessageDialog(this, "Room Number already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 String type = (String) comboType.getSelectedItem();
                 
-                String rateText = txtRate.getText();
+                String rateText = txtRate.getText().trim();
+                if (rateText.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Nightly Rate is required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 if (!rateText.matches("\\d+(\\.\\d+)?")) {
                     JOptionPane.showMessageDialog(this, "Nightly Rate must be a valid number.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 double rate = Double.parseDouble(rateText);
+                
+                if (rate <= 0) {
+                    JOptionPane.showMessageDialog(this, "Nightly Rate must be greater than zero.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 
                 String status = (String) comboStatus.getSelectedItem();
 
@@ -102,8 +118,6 @@ public class AddRoomPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Room added successfully!");
                 clearFields();
                 refreshTable();
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Please enter a valid rate.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Error adding room: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }

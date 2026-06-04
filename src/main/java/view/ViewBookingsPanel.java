@@ -40,6 +40,9 @@ public class ViewBookingsPanel extends JPanel {
         JButton btnRefresh = new JButton("Refresh");
         topPanel.add(btnRefresh);
 
+        JButton btnDelete = new JButton("Delete");
+        topPanel.add(btnDelete);
+
         add(topPanel, BorderLayout.NORTH);
 
         // Table
@@ -62,6 +65,26 @@ public class ViewBookingsPanel extends JPanel {
         });
 
         btnRefresh.addActionListener(e -> refreshTable());
+
+        btnDelete.addActionListener(e -> {
+            int selectedRow = bookingTable.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Please select a booking to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this booking?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    int bookingId = (int) bookingTable.getValueAt(selectedRow, 0);
+                    bookingDAO.deleteBooking(bookingId);
+                    JOptionPane.showMessageDialog(this, "Booking deleted successfully!");
+                    refreshTable();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error deleting booking: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
 
     public void refreshTable() {
