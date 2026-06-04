@@ -9,6 +9,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ViewBookingsPanel extends JPanel {
     private BookingDAO bookingDAO;
@@ -68,6 +69,14 @@ public class ViewBookingsPanel extends JPanel {
             tableModel.setRowCount(0);
             List<Booking> bookings = bookingDAO.getAllBookings();
             for (Booking booking : bookings) {
+                double displayCost = booking.getTotalCost();
+                if (displayCost <= 0) {
+                    long diffInMillies = Math.abs(booking.getCheckoutDate().getTime() - booking.getCheckinDate().getTime());
+                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                    if (diff == 0) diff = 1;
+                    displayCost = diff * booking.getRoomRate();
+                }
+
                 tableModel.addRow(new Object[]{
                         booking.getId(),
                         booking.getGuestName(),
@@ -75,7 +84,7 @@ public class ViewBookingsPanel extends JPanel {
                         booking.getRoomId(),
                         booking.getCheckinDate(),
                         booking.getCheckoutDate(),
-                        booking.getTotalCost()
+                        String.format("%.2f (Est.)", displayCost)
                 });
             }
         } catch (SQLException e) {

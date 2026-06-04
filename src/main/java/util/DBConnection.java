@@ -19,6 +19,7 @@ public class DBConnection {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
+    //main function placed here just to test whether database connection is successful or not
     public static void main(String[] args) {
         try (Connection conn = getConnection()) {
             if (conn != null) {

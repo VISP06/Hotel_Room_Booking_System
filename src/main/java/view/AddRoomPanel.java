@@ -5,6 +5,10 @@ import model.Room;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
@@ -37,6 +41,7 @@ public class AddRoomPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(new JLabel("Room Number:"), gbc);
         txtRoomNumber = new JTextField(15);
+        ((AbstractDocument) txtRoomNumber.getDocument()).setDocumentFilter(new NumericDocumentFilter());
         gbc.gridx = 1;
         formPanel.add(txtRoomNumber, gbc);
 
@@ -75,8 +80,20 @@ public class AddRoomPanel extends JPanel {
         btnAdd.addActionListener(e -> {
             try {
                 String roomNumber = txtRoomNumber.getText();
+                if (roomNumber.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Room Number is required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 String type = (String) comboType.getSelectedItem();
-                double rate = Double.parseDouble(txtRate.getText());
+                
+                String rateText = txtRate.getText();
+                if (!rateText.matches("\\d+(\\.\\d+)?")) {
+                    JOptionPane.showMessageDialog(this, "Nightly Rate must be a valid number.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                double rate = Double.parseDouble(rateText);
+                
                 String status = (String) comboStatus.getSelectedItem();
 
                 Room room = new Room(0, roomNumber, type, rate, status);
@@ -91,6 +108,18 @@ public class AddRoomPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Error adding room: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+    }
+
+    private static class NumericDocumentFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            if (string.matches("\\d+")) super.insertString(fb, offset, string, attr);
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (text.matches("\\d+")) super.replace(fb, offset, length, text, attrs);
+        }
     }
 
     private void clearFields() {

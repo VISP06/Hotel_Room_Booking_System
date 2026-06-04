@@ -31,12 +31,14 @@ public class BookingDAO {
 
     public List<Booking> getAllBookings() throws SQLException {
         List<Booking> bookings = new ArrayList<>();
-        String sql = "SELECT * FROM bookings";
+        String sql = "SELECT b.*, r.rate FROM bookings b JOIN rooms r ON b.room_id = r.id";
         try (Connection conn = DBConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                bookings.add(mapResultSetToBooking(rs));
+                Booking booking = mapResultSetToBooking(rs);
+                booking.setRoomRate(rs.getDouble("rate"));
+                bookings.add(booking);
             }
         }
         return bookings;

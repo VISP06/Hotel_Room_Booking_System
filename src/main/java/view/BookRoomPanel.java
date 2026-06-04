@@ -52,6 +52,17 @@ public class BookRoomPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 2;
         formPanel.add(new JLabel("Select Room:"), gbc);
         comboRooms = new JComboBox<>();
+        comboRooms.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Room) {
+                    Room room = (Room) value;
+                    setText(String.format("Room %s - %s (Rs. %.0f/night)", room.getRoomNumber(), room.getType(), room.getRate()));
+                }
+                return this;
+            }
+        });
         gbc.gridx = 1;
         formPanel.add(comboRooms, gbc);
 
@@ -78,9 +89,22 @@ public class BookRoomPanel extends JPanel {
             try {
                 String guestName = txtGuestName.getText();
                 String contact = txtContact.getText();
+                
+                // Contact Validation
+                if (!contact.matches("\\d+")) {
+                    JOptionPane.showMessageDialog(this, "Contact Info must only contain numeric digits.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Room selectedRoom = (Room) comboRooms.getSelectedItem();
                 Date checkIn = Date.valueOf(txtCheckIn.getText());
                 Date checkOut = Date.valueOf(txtCheckOut.getText());
+
+                // Date Validation
+                if (checkIn.after(checkOut)) {
+                    JOptionPane.showMessageDialog(this, "Check-in date cannot be after the Check-out date.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 if (selectedRoom == null) {
                     JOptionPane.showMessageDialog(this, "Please select a room.");
