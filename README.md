@@ -6,13 +6,13 @@ A modern desktop application built with **Java Swing** and **MySQL** that helps 
 
 ## 📸 Screenshots
 
-| Dashboard | Room Search |
-|------------|------------|
-| ![Dashboard](screenshots/dashboard.png) | ![Room Search](screenshots/room-search.png) |
+| Add Room | Search Availability |
+|-----------|-----------|
+| ![Add Room](screenshots/Add%20Room.png) | ![Search Availability](screenshots/Search%20Availability.png) |
 
-| Booking Management | Check-Out & Billing |
-|------------|------------|
-| ![Booking Management](screenshots/booking-management.png) | ![Check-Out](screenshots/checkout.png) |
+| Book Room | View Bookings |
+|-----------|-----------|
+| ![Book Room](screenshots/Book%20Room.png) | ![View Bookings](screenshots/View%20Bookings.png) |
 
 ---
 
