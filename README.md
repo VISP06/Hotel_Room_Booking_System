@@ -139,19 +139,6 @@ Main.main()
 * Booking Records Management
 * Automated Billing & Check-Out
 
----
-
-## 🔮 Future Enhancements
-
-* User Authentication & Role Management
-* Online Reservation Support
-* PDF Invoice Generation
-* Room Categories & Pricing Tiers
-* Reporting and Analytics Dashboard
-* Email Notifications for Guests
-
----
-
 ## 📄 License
 
 This project is intended for educational and learning purposes. Feel free to modify and extend it according to your requirements.
