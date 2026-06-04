@@ -59,12 +59,7 @@ public class SearchRoomPanel extends JPanel {
             String selectedType = (String) comboType.getSelectedItem();
             String selectedStatus = (String) comboStatus.getSelectedItem();
 
-            List<Room> rooms = roomDAO.getAllRooms();
-            
-            List<Room> filteredRooms = rooms.stream()
-                .filter(r -> selectedType.equals("All") || r.getType().equalsIgnoreCase(selectedType))
-                .filter(r -> selectedStatus.equals("All") || r.getStatus().equalsIgnoreCase(selectedStatus))
-                .collect(Collectors.toList());
+            List<Room> filteredRooms = roomDAO.searchRooms(selectedType, selectedStatus);
 
             for (Room room : filteredRooms) {
                 tableModel.addRow(new Object[]{

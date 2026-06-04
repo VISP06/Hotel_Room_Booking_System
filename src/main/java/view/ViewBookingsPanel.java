@@ -56,15 +56,14 @@ public class ViewBookingsPanel extends JPanel {
 
         // Action Listeners
         btnFilter.addActionListener(e -> {
-            String text = txtSearch.getText();
-            if (text.trim().length() == 0) {
-                sorter.setRowFilter(null);
-            } else {
-                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-            }
+            String text = txtSearch.getText().trim();
+            refreshTable(text);
         });
 
-        btnRefresh.addActionListener(e -> refreshTable());
+        btnRefresh.addActionListener(e -> {
+            txtSearch.setText("");
+            refreshTable(null);
+        });
 
         btnDelete.addActionListener(e -> {
             int selectedRow = bookingTable.getSelectedRow();
@@ -79,7 +78,7 @@ public class ViewBookingsPanel extends JPanel {
                     int bookingId = (int) bookingTable.getValueAt(selectedRow, 0);
                     bookingDAO.deleteBooking(bookingId);
                     JOptionPane.showMessageDialog(this, "Booking deleted successfully!");
-                    refreshTable();
+                    refreshTable(null);
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(this, "Error deleting booking: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -88,9 +87,19 @@ public class ViewBookingsPanel extends JPanel {
     }
 
     public void refreshTable() {
+        refreshTable(null);
+    }
+
+    public void refreshTable(String keyword) {
         try {
             tableModel.setRowCount(0);
-            List<Booking> bookings = bookingDAO.getAllBookings();
+            List<Booking> bookings;
+            if (keyword != null && !keyword.isEmpty()) {
+                bookings = bookingDAO.searchBookings(keyword);
+            } else {
+                bookings = bookingDAO.getAllBookings();
+            }
+
             for (Booking booking : bookings) {
                 double displayCost = booking.getTotalCost();
                 if (displayCost <= 0) {

@@ -44,6 +44,33 @@ public class BookingDAO {
         return bookings;
     }
 
+    public List<Booking> searchBookings(String keyword) throws SQLException {
+        List<Booking> bookings = new ArrayList<>();
+        String sql = "SELECT b.*, r.rate FROM bookings b JOIN rooms r ON b.room_id = r.id " +
+                     "WHERE b.guest_name LIKE ? OR b.room_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, "%" + keyword + "%");
+            
+            int roomId = -1;
+            try {
+                roomId = Integer.parseInt(keyword);
+            } catch (NumberFormatException e) {
+                // Not a number, so room_id filter won't match anyway
+            }
+            pstmt.setInt(2, roomId);
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Booking booking = mapResultSetToBooking(rs);
+                    booking.setRoomRate(rs.getDouble("rate"));
+                    bookings.add(booking);
+                }
+            }
+        }
+        return bookings;
+    }
+
     public double calculateCheckoutCost(int bookingId) throws SQLException {
         String sql = "SELECT b.id, b.room_id, b.checkin_date, b.checkout_date, r.rate " +
                      "FROM bookings b JOIN rooms r ON b.room_id = r.id " +
