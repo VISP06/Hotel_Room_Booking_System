@@ -1,7 +1,7 @@
 package main;
 
 import util.ThemeManager;
-import view.LoginFrame;
+import view.WelcomeFrame;
 
 import javax.swing.*;
 
@@ -11,8 +11,8 @@ public class Main {
         ThemeManager.applyNeonTheme();
 
         SwingUtilities.invokeLater(() -> {
-            LoginFrame loginFrame = new LoginFrame();
-            loginFrame.setVisible(true);
+            WelcomeFrame welcomeFrame = new WelcomeFrame();
+            welcomeFrame.setVisible(true);
         });
     }
 }

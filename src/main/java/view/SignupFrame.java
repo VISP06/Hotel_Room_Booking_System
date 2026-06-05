@@ -89,7 +89,7 @@ public class SignupFrame extends JFrame {
                 }
                 if (accountDAO.registerUser(user, pass)) {
                     JOptionPane.showMessageDialog(this, "Registration successful!");
-                    new LoginFrame().setVisible(true);
+                    new UserLoginFrame().setVisible(true);
                     dispose();
                 }
             } catch (SQLException ex) {
@@ -100,7 +100,7 @@ public class SignupFrame extends JFrame {
         lblLogin.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new LoginFrame().setVisible(true);
+                new UserLoginFrame().setVisible(true);
                 dispose();
             }
         });
