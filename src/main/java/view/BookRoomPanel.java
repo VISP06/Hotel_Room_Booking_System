@@ -4,6 +4,7 @@ import dao.BookingDAO;
 import dao.RoomDAO;
 import model.Booking;
 import model.Room;
+import util.UserSession;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
@@ -33,6 +34,12 @@ public class BookRoomPanel extends JPanel {
 
         initComponents();
         refreshRooms();
+        
+        // Security logic for USER role
+        if ("USER".equals(UserSession.getInstance().getRole())) {
+            txtGuestName.setText(UserSession.getInstance().getUsername());
+            txtGuestName.setEditable(false);
+        }
     }
 
     private void initComponents() {

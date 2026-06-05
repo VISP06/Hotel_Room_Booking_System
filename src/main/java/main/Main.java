@@ -1,21 +1,18 @@
 package main;
 
-import view.MainDashboard;
+import util.ThemeManager;
+import view.LoginFrame;
 
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+        // Apply neon theme first to maintain global aesthetic
+        ThemeManager.applyNeonTheme();
+
         SwingUtilities.invokeLater(() -> {
-            try {
-                // Set system look and feel for a more modern appearance
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            MainDashboard dashboard = new MainDashboard();
-            dashboard.setVisible(true);
+            LoginFrame loginFrame = new LoginFrame();
+            loginFrame.setVisible(true);
         });
     }
 }

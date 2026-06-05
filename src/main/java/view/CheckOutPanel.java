@@ -3,6 +3,7 @@ package view;
 import dao.BookingDAO;
 import dao.RoomDAO;
 import model.Booking;
+import util.UserSession;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +62,7 @@ public class CheckOutPanel extends JPanel {
                     "Check-in: %s\n" +
                     "Check-out: %s\n" +
                     "-------------------------\n" +
-                    "Total Cost: $%.2f\n" +
+                    "Total Cost: ₹%.2f\n" +
                     "-------------------------",
                     selected.booking.getGuestName(),
                     selected.booking.getRoomId(),
@@ -81,11 +82,16 @@ public class CheckOutPanel extends JPanel {
     public void refreshBookings() {
         try {
             comboBookings.removeAllItems();
-            List<Booking> bookings = bookingDAO.getAllBookings();
-            // Only show bookings that haven't been charged yet (totalCost == 0)
-            List<Booking> activeBookings = bookings.stream()
-                    .filter(b -> b.getTotalCost() == 0)
-                    .collect(Collectors.toList());
+            List<Booking> activeBookings;
+            
+            if ("USER".equals(UserSession.getInstance().getRole())) {
+                activeBookings = bookingDAO.getActiveBookingsByGuest(UserSession.getInstance().getUsername());
+            } else {
+                List<Booking> bookings = bookingDAO.getAllBookings();
+                activeBookings = bookings.stream()
+                        .filter(b -> b.getTotalCost() == 0)
+                        .collect(Collectors.toList());
+            }
             
             for (Booking b : activeBookings) {
                 comboBookings.addItem(new BookingWrapper(b));

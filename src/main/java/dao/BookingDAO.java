@@ -133,6 +133,24 @@ public class BookingDAO {
         }
     }
 
+    public List<Booking> getActiveBookingsByGuest(String guestName) throws SQLException {
+        List<Booking> bookings = new ArrayList<>();
+        String sql = "SELECT b.*, r.rate FROM bookings b JOIN rooms r ON b.room_id = r.id " +
+                     "WHERE b.guest_name = ? AND b.total_cost = 0";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, guestName);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Booking booking = mapResultSetToBooking(rs);
+                    booking.setRoomRate(rs.getDouble("rate"));
+                    bookings.add(booking);
+                }
+            }
+        }
+        return bookings;
+    }
+
     private void updateBookingCost(int bookingId, double totalCost) throws SQLException {
         String sql = "UPDATE bookings SET total_cost = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
