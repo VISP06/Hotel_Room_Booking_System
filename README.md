@@ -4,15 +4,34 @@ A modern desktop application built with **Java Swing** and **MySQL** that helps 
 
 ---
 
-## 📸 Screenshots
+## 🖼️ UI Gallery
 
-| Add Room | Search Availability |
-|-----------|-----------|
-| ![Add Room](screenshots/Add%20Room.png) | ![Search Availability](screenshots/Search%20Availability.png) |
+The system features a professional dark-themed interface with neon green accents, optimized for high visibility and user efficiency.
 
-| Book Room | View Bookings |
-|-----------|-----------|
-| ![Book Room](screenshots/Book%20Room.png) | ![View Bookings](screenshots/View%20Bookings.png) |
+### 🔐 Authentication & Access Control
+![Authentication](screenshots/Login_screen.png)
+**Secure Authentication:** A streamlined login interface featuring strict role-based access control for both Guests and Staff members.
+
+![Portal Gateway](screenshots/portal_page.png)
+**Role-Based Gateway:** A centralized routing portal that cleanly separates personalized guest services from secure administrative operations.
+
+---
+
+### 💼 Administrative & Staff Operations
+![Room Management](screenshots/staff_add_room.png)
+**Inventory Control:** A comprehensive administrative interface allowing staff to provision new rooms and manage inventory in real-time.
+
+![Room Search](screenshots/search_availability.png)
+**Live Room Search:** High-performance search interface for real-time availability tracking and multi-parameter filtering across the hotel inventory.
+
+---
+
+### 🛎️ Guest Services
+![Guest Reservations](screenshots/book_room.png)
+**Seamless Reservations:** Intuitive booking module with automated guest identification and real-time availability synchronization.
+
+![Check-Out](screenshots/checkout.png)
+**Automated Billing:** Dynamic check-out system featuring instant stay duration calculation and professional receipt generation.
 
 ---
 
