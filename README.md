@@ -10,9 +10,11 @@ The system features a professional dark-themed interface with neon green accents
 
 ### 🔐 Authentication & Access Control
 ![Authentication](screenshots/Login_screen.png)
+
 **Secure Authentication:** A streamlined login interface featuring strict role-based access control for both Guests and Staff members.
 
 ![Portal Gateway](screenshots/portal_page.png)
+
 **Role-Based Gateway:** A centralized routing portal that cleanly separates personalized guest services from secure administrative operations.
 
 ---
