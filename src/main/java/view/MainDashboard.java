@@ -100,9 +100,13 @@ public class MainDashboard extends JFrame {
 
         btnLogout.addActionListener(e -> {
             dialog.dispose();
-            this.dispose();
-            UserSession.getInstance().clear();
-            new LoginFrame().setVisible(true);
+            // Inside MainDashboard.java where the Logout button is clicked:
+            this.dispose(); // Closes the dashboard
+            UserSession.getInstance().clear(); // Clears the session data
+            //Open the Welcome Portal instead of the old LoginFrame
+            SwingUtilities.invokeLater(() -> {
+                new WelcomeFrame().setVisible(true);
+            });
         });
 
         dialog.setVisible(true);
